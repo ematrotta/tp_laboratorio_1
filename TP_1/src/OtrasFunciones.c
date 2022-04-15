@@ -6,6 +6,13 @@
  */
 #include "OtrasFunciones.h"
 
+/// @fn int RetornoDeNumeroEntero(int)
+/// @brief Retornar 0, 1 o -1 dependiendo del entero ingresado por parametro
+///
+/// @pre
+/// @post
+/// @param numeroEntero Numero ingresado por parametro
+/// @return 0 si es 0, 1 si es un número positivo, -1 si es negativo
 int RetornoDeNumeroEntero(int numeroEntero)
 {
 	int retorno;
@@ -25,6 +32,18 @@ int RetornoDeNumeroEntero(int numeroEntero)
 	return retorno;
 }
 
+/// @fn int SubMenuTp1(float, float, float*, float*, float*, float*)
+/// @brief Calculos Para el menu del TP1 de Programacion
+///
+/// @pre
+/// @post
+/// @param kilometrosIngresados Kilometros que ingreso el usuario
+/// @param precioVuelo Precio del vuelo ingresado por el usuario
+/// @param precionConTarjetaDebito Puntero del resultado del porcentaje del pago con tarjeta de Debito
+/// @param precionConTarjetaCredito Puntero del resultado del porcentaje del pago con tarjeta de Credito
+/// @param precioBitcoin Puntero del resultado del porcentaje del pago con BitCoins
+/// @param precioUnitario Puntero del resultado del precio por kilometro
+/// @return -1 Si salio mal, 0 si salio bien
 int SubMenuTp1(float kilometrosIngresados,float precioVuelo,float*precionConTarjetaDebito,float*precionConTarjetaCredito,float*precioBitcoin,float*precioUnitario)
 {
 	int retorno;

@@ -7,6 +7,18 @@
 
 #include "get.h"
 
+/// @fn int GetCharacter(char[], char[], char*, char, char, int)
+/// @brief Solicita un caracter al usuario
+///
+/// @pre
+/// @post
+/// @param mensaje Mensaje de Solicitud de ingreso
+/// @param mensajeError Mensaje de error en la solicitud
+/// @param pCaracter Puntero del catacter ingresado
+/// @param maximo Valor máximo del caracter a ingresar
+/// @param minimo Valor minimo del caracter a ingresar
+/// @param reintentos Cantidad de intentos fallidos permitidos
+/// @return -1  si salio mal, 0 si salio bien
 int GetCharacter(char mensaje[],char mensajeError[],char *pCaracter,char maximo, char minimo,int reintentos)
 {
 	int rtn;
@@ -37,6 +49,18 @@ int GetCharacter(char mensaje[],char mensajeError[],char *pCaracter,char maximo,
 }
 
 
+/// @fn int GetInt(int*, char[], char[], int, int, int)
+/// @brief Solicita un numero entero al usuario
+///
+/// @pre
+/// @post
+/// @param numero Puntero del número a ingresar
+/// @param mensaje Mensaje de solicitud de ingreso
+/// @param mensajeError Mensaje de error en la solicitud
+/// @param minimo Valor minimo a ingresar
+/// @param maximo Valor maximo a ingresar
+/// @param reintentos Cantidad de intentos fallidos permitidos
+/// @return -1 si salio mal, 0 si salio bien
 int GetInt(int*numero,char mensaje[],char mensajeError[],int minimo,int maximo,int reintentos)
 {
     int retorno;
@@ -67,6 +91,18 @@ int GetInt(int*numero,char mensaje[],char mensajeError[],int minimo,int maximo,i
     return retorno;
 }
 
+/// @fn int GetFloat(float*, char[], char[], float, float, int)
+/// @brief Solicita un numero flotante al usuario
+///
+/// @pre
+/// @post
+/// @param numero Puntero del número a ingresar
+/// @param mensaje Mensaje de solicitud de ingreso
+/// @param mensajeError Mensaje de error en la solicitud
+/// @param minimo Valor minimo a ingresar
+/// @param maximo Valor maximo a ingresar
+/// @param reintentos reintentos Cantidad de intentos fallidos permitidos
+/// @return -1 si salio mal, 0 si salio bien
 int GetFloat(float*numero,char mensaje[],char mensajeError[],float minimo,float maximo,int reintentos)
 {
     int retorno;

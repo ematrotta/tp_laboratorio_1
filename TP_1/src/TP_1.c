@@ -40,9 +40,12 @@ int main(void) {
 
     retorno = -1;
 
+    //Imprecion del menú principal
     printf("\t\t\tCalculador de costos de viajes\n1. Ingresar Kilómetros\n2. Ingresar Precio de Vuelos\n3. Calcular todos los costos\n4. Informar Resultados\n5. Carga forzada de datos\n6. Salir\n\n");
 
+    //Ingreso del número seleccionado
     resultadoOpcionIngresada=GetInt(&numeroIngresado,"Ingrese una opción: ","\nLa opcion debe ser entre 1 y 6\n\n",1,6,3);
+
 
     if(resultadoOpcionIngresada == 0)
     {
@@ -51,9 +54,11 @@ int main(void) {
             switch(numeroIngresado)
             {
                 case 1:
+                	//Ingreso de los km por el usuario
                     resultadoKilometrosIngresados = GetFloat(&kilometrosIngresados,"\nIngresar Kilómetros: ","Debe ser mayor a 0 o menor que 12,742\n",1,12742,3);
                     break;
                 case 2:
+                	//Ingreso del precio de vuelos de aerolineas y Latam
                     if(!resultadoKilometrosIngresados)
                     {
                         resultadoPrecioAerolineasIngresado = GetFloat(&precioVueloAerolineas,"\n- Precio vuelo Aerolíneas: ","Debe ser mayor a 0 o menor a 1000000",1,1000000,3);
@@ -65,6 +70,7 @@ int main(void) {
                     }
                     break;
                 case 3:
+                	//Calculo de resultados segun precio y kilometros ingresados
                 	if(!resultadoPrecioAerolineasIngresado && !resultadoPrecioLatamIngresado)
                 	{
                 		resultadoSubMenuAerolineas = SubMenuTp1(kilometrosIngresados, precioVueloAerolineas, &precioConTarjetaDebitoAerolineas, &precioConTarjetaCreditoAerolineas, &precioBitcoinAerolineas, &precioUnitarioAerolineas);
@@ -83,6 +89,7 @@ int main(void) {
 
                 	break;
                 case 4:
+                	//Impresion de resultados por los km y los costos ingresados
                 	if(!resultadoSubMenuAerolineas && !resultadoSubMenuLatam)
                 	{
                 		//Informe Resultados Aerolíneas
@@ -98,6 +105,7 @@ int main(void) {
                 	}
                 	break;
                 case 5:
+                	//Calculo e imprecion de resultados contantes dodos en el TP
                     kilometrosIngresados = 7090;
                     precioVueloAerolineas = 162965;
                     precioVueloLatam = 159339;
@@ -115,6 +123,7 @@ int main(void) {
                 case 6:
                     break;
             }
+            //Solicitd de nueva opcion de ingreso
             GetInt(&numeroIngresado,"\nIngrese una Nueva opción: ","La opcion debe ser entre 1  y 6",1,6,3);
         }
         retorno = 0;
