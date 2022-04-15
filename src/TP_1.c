@@ -113,11 +113,11 @@ int main(void) {
 
                 	break;
                 case 6:
-                	retorno = 0;
                     break;
             }
             GetInt(&numeroIngresado,"\nIngrese una Nueva opción: ","La opcion debe ser entre 1  y 6",1,6,3);
         }
+        retorno = 0;
     }
     else
     {
