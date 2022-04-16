@@ -92,12 +92,7 @@ int main(void) {
                 	//Impresion de resultados por los km y los costos ingresados
                 	if(!resultadoSubMenuAerolineas && !resultadoSubMenuLatam)
                 	{
-                		//Informe Resultados Aerolíneas
-                		printf("\nKMs Ingresados: %.2f km\n\nPrecio Vuelos Aerolíneas: $%.2f\na) Precio con tarjeta de débito: $ %.2f\nb) Precio con tarjeta de crédito: $ %.2f\nc) Precio pagando con bitcoin: $ %.2f BTC\nd) Precio unitario: $ %.2f\n\n",kilometrosIngresados,precioVueloAerolineas,precioConTarjetaDebitoAerolineas,precioConTarjetaCreditoAerolineas,precioBitcoinAerolineas,precioUnitarioAerolineas);
-
-                		//Informe Resultados Latam
-                		printf("Precio Vuelos Latam: $%.2f\na) Precio con tarjeta de débito: $ %.2f\nb) Precio con tarjeta de crédito: $ %.2f\nc) Precio pagando con bitcoin: $ %.2f BTC\nd) Precio unitario: $ %.2f\n\nLa diferencia de precio es : $ %.2f\n\n",precioVueloLatam,precioConTarjetaDebitoLatam,precioConTarjetaCreditoLatam,precioBitcoinLatam,precioUnitarioLatam,diferenciaPrecios);
-
+                		ImpresionDeResultadosTp1(kilometrosIngresados,precioVueloAerolineas,precioConTarjetaDebitoAerolineas,precioConTarjetaCreditoAerolineas,precioBitcoinAerolineas,precioUnitarioAerolineas,precioVueloLatam,precioConTarjetaDebitoLatam,precioConTarjetaCreditoLatam,precioBitcoinLatam,precioUnitarioLatam,diferenciaPrecios);
                 	}
                 	else
                 	{
@@ -116,9 +111,7 @@ int main(void) {
                     {
                     	diferenciaPrecios = diferenciaPrecios*-1;
                     }
-            		printf("\nKMs Ingresados: %.2f km\n\nPrecio Aerolíneas: $%.2f\na) Precio con tarjeta de débito: $ %.2f\nb) Precio con tarjeta de crédito: $ %.2f\nc) Precio pagando con bitcoin: $ %.2f BTC\nd) Precio unitario: $ %.2f\n\n",kilometrosIngresados,precioVueloAerolineas,precioConTarjetaDebitoAerolineas,precioConTarjetaCreditoAerolineas,precioBitcoinAerolineas,precioUnitarioAerolineas);
-            		printf("Precio Latam: $%.2f\na) Precio con tarjeta de débito: $ %.2f\nb) Precio con tarjeta de crédito: $ %.2f\nc) Precio pagando con bitcoin: $ %.2f BTC\nd) Precio unitario: $ %.2f\n\nLa diferencia de precio es : $%.2f\n\n",precioVueloLatam,precioConTarjetaDebitoLatam,precioConTarjetaCreditoLatam,precioBitcoinLatam,precioUnitarioLatam,diferenciaPrecios);
-
+            		ImpresionDeResultadosTp1(kilometrosIngresados,precioVueloAerolineas,precioConTarjetaDebitoAerolineas,precioConTarjetaCreditoAerolineas,precioBitcoinAerolineas,precioUnitarioAerolineas,precioVueloLatam,precioConTarjetaDebitoLatam,precioConTarjetaCreditoLatam,precioBitcoinLatam,precioUnitarioLatam,diferenciaPrecios);
                 	break;
                 case 6:
                     break;
