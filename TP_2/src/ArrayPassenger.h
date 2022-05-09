@@ -17,6 +17,10 @@
 #define TRUE 0
 #define FALSE 1
 #define LOW 2
+#define TAM_TYPEPASSENGER 30
+#define STATUSFLIGHT_ACTIVE 1
+#define STATUSFLIGHT_REPROGRAM 2
+#define STATUSFLIGHT_CANCEL 3
 
 
 typedef struct

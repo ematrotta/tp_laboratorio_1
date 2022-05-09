@@ -312,7 +312,24 @@ int sPassenger_removePassenger(sPassenger* list, int len, int id)
 /// @param passenger
 void sPassenger_printOne(sPassenger passenger)
 {
-	printf("\nEl nombre es: %s\nEl apellido es: %s\nEl precio es: %.2f\nEl id es: %d\nEl tipo es: %d\nEl codigo de vuelo es: %s\nEl estado es: %d\n",passenger.name,passenger.lastName,passenger.price,passenger.id,passenger.typePassenger,passenger.flycode,passenger.isEmpty);
+	char auxiliarTypePassenger[TAM_TYPEPASSENGER];
+	switch(passenger.typePassenger)
+	{
+	case 1:
+		strncpy(auxiliarTypePassenger,"Primera Clase",sizeof(auxiliarTypePassenger));
+		break;
+	case 2:
+		strncpy(auxiliarTypePassenger,"Clase Ejecutiva o Business",sizeof(auxiliarTypePassenger));
+		break;
+	case 3:
+		strncpy(auxiliarTypePassenger,"Clase Premium economy",sizeof(auxiliarTypePassenger));
+		break;
+	case 4:
+		strncpy(auxiliarTypePassenger,"Clase turista o economica",sizeof(auxiliarTypePassenger));
+		break;
+	}
+
+	printf("\n%-50s|%-50s|%-10.2f|%-6d|%-30s|%-20s|%-20d",passenger.name,passenger.lastName,passenger.price,passenger.id,auxiliarTypePassenger,passenger.flycode,passenger.statusFlight);
 }
 
 /// @fn int sPassenger_printAll(sPassenger*, int)

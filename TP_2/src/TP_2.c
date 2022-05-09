@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "ArrayPassenger.h"
+
 #define PASAJEROS 4
 
 
@@ -177,6 +178,7 @@ int main(void){
 							//ORDENO LOS NOMBRES ALFABETICAMENTE Y POR TIPO DE TODOS LOS PASAJEROS
 							sPassenger_sortPassengers(listaPasajeros, PASAJEROS, 1);
 							//IMPRIMO SOLO LOS PASAJEROS QUE NO ESTEN LIBRES
+							printf("%-50s|%-50s|%-10s|%-6s|%-30s|%-20s|%-20s","NOMBRE","APELLIDO","PRECIO","ID","TIPO PASAJERO","CODIGO DE VUELO","ESTADO DE VUELO");
 							sPassenger_printPassengers(listaPasajeros, PASAJEROS);
 							break;
 						case 2:
@@ -246,7 +248,7 @@ int main(void){
 		}
 
 		//SOLICITO EN CADA ITEREACION SI EL USUARIO DESEA CONTINUAR
-		if(GetCharacter2Options(&salida, "\nDesea Continuar?: S/N", "ERROR. No es la opcion correcta", 'S', 'N', 3)!= 0)
+		if(GetCharacter2Options(&salida, "\n\nDesea Continuar?: S/N", "ERROR. No es la opcion correcta", 'S', 'N', 3)!= 0)
 		{
 			retorno = -2;
 		}
