@@ -12,26 +12,41 @@ static int sPassenger_IdGenerator(void)
 	return initId++;
 }
 
+/// @fn int int sPassenger_InputsDataPassenger(sPassenger *,sFlyght*,int, char*)
+/// @brief Ordenar array de entidad según FLYCODE
+///
+/// @pre
+/// @post
+/// @param passenger puntero a estructura de un pasajero
+/// @param listFlyghts Array Vuelos
+/// @param lenflyghts Tamaño del array vuelos
+/// @param mensajeError
+/// @return -1 si el tipo es erroneo, -2 si el precio es erroneo, -3 Si no se encontraron vuelos con el flycode ingresado,
+///-4 si no se cargó bien el codigo de vuelo, -5 Si el apellido es erroneo, -6 si el nombre es Erroneo
 int sPassenger_InputsDataPassenger(sPassenger * passenger,sFlyght listFlyghts[],int lenflyghts, char mensajeError[])
 {
 	sPassenger auxiliar;
 	int retorno;
-	int indexFlycode;
 
 	if(passenger != NULL && listFlyghts != NULL && mensajeError != NULL)
 	{
+		//INGRESO NOMBRE
 		if(Utn_GetName(auxiliar.name, NAME, "\nIngrese el nombre", "ERROR. Maxima cantidad de caracteres: 50 o No es un Nombre", 3) == 0)
 		{
+			//INGRESO APELLIDO
 			if(Utn_GetName(auxiliar.lastName, NAME, "Ingrese el Apellido", "ERROR. Maxima cantidad de caracteres: 50 o No es un Apellido", 3) == 0)
 			{
+				//INGRESO CODIGO DE VUELO
 				if(Utn_GetString(auxiliar.flycode, "Ingrese el codigo de vuelo", "ERROR. Maxima cantidad de caracteres: 9", FLYCODE, 3) == 0)
 				{
-					indexFlycode = sFlyght_findFlyghtById(listFlyghts, lenflyghts, auxiliar.flycode);
-					if(indexFlycode>=0)
+					//BUSCO EL FLYCODE INGRESADO, DENTRO DE LOS VUELOS Y ARROJO EL INDICE
+					if(sFlyght_findFlyghtById(listFlyghts, lenflyghts, auxiliar.flycode)>=0)
 					{
-						auxiliar.statusFlight = listFlyghts[indexFlycode].status;
+
+						//INGRESO PRECIO
 						if(Utn_GetNumeroFloat(&auxiliar.price, "Ingrese el precio de vuelo", "ERROR. Debe ser entre 0 y 10000", 10000, 0, 3) == 0)
 						{
+							//INGRESO TIPO DE PASAJERO
 							if(Utn_GetNumeroInt(&auxiliar.typePassenger, "Ingrese el tipo de Pasajero:\n\t1)Primera clase."
 									"\n\t2)Clase ejecutiva o business.\n\t3)Clase premium economy\n\t4)Clase turista o económica.\nOPCIÓN", "ERROR. Debe ser entre 1 y 4", 4, 1, 3) == 0)
 							{
@@ -91,6 +106,17 @@ int sPassenger_InputsDataPassenger(sPassenger * passenger,sFlyght listFlyghts[],
 	return retorno;
 }
 
+
+/// @fn int sPassenger_addPassengerFlyghtStatus(sPassenger *,int,sFlyght*,int)
+/// @brief Agregar a cada pasajero ACTIVO el estado de vuelo en base a su codigo de vuelo
+///
+/// @pre
+/// @post
+/// @param passenger listado de pasajeros
+/// @param lenPassenger Tamaño del array pasajeros
+/// @param listFlyghts Array Vuelos
+/// @param lenflyghts Tamaño del array vuelos
+/// @return -1 si no se ingresaron correctamente los parametros, 0 si salio todo bien
 int sPassenger_addPassengerFlyghtStatus(sPassenger passenger[],int lenPassenger, sFlyght listFlyghts[],int lenflyghts)
 {
 	int retorno;
@@ -135,11 +161,22 @@ int sPassenger_addPassengerFlyghtStatus(sPassenger passenger[],int lenPassenger,
 
 
 
+/// @fn int sPassenger_Modification(sPassenger *,int,sFlyght*,int)
+/// @brief Agregar a cada pasajero ACTIVO el estado de vuelo en base a su codigo de vuelo
+///
+/// @pre
+/// @post
+/// @param passenger listado de pasajeros
+/// @param lenPassenger Tamaño del array pasajeros
+/// @param listFlyghts Array Vuelos
+/// @param lenflyghts Tamaño del array vuelos
+/// @return -1 si no se ingresaron correctamente los parametros, 0 si salio todo bien
 int sPassenger_Modification(sPassenger * list,int len,int id,sFlyght listFlyght[],int lenFlyghts)
 {
 	int retorno;
 	int indiceId;
 	int opcionMenu;
+
 	char auxiliarFlycode[FLYCODE];
 
 	retorno = -1;
@@ -179,7 +216,7 @@ int sPassenger_Modification(sPassenger * list,int len,int id,sFlyght listFlyght[
 						}
 						break;
 					case 3:
-						//MODIFICAR CODIGO DE VUELO
+						//MODIFICAR CODIGO DE VUELO SOLO SI SE ENCUENTRA ENTRE LOS VUELOS DISPONIBLES
 						if(Utn_GetString(auxiliarFlycode, "Ingrese el nuevo codigo de vuelo", "El codigo de vuelo supera el buffer",FLYCODE, 3) == 0 && sFlyght_findFlyghtById(listFlyght,lenFlyghts,auxiliarFlycode)>=0)
 						{
 							strncpy(list[indiceId].flycode,auxiliarFlycode,FLYCODE);

@@ -8,7 +8,7 @@
 #include "ArrayPassenger.h"
 
 /// @fn int sPassenger_initPassenger(sPassenger*, int)
-/// @brief Inicializar todos los campos isEmpty
+/// @brief Inicializar todos los campos isEmpty de los Pasajeros
 ///
 /// @pre
 /// @post
@@ -111,7 +111,7 @@ lastName[],float price,int typePassenger, char flycode[])
 ///
 /// @pre
 /// @post
-/// @param list Array pasajeros
+/// @param list Array
 /// @param len tamaño del array
 /// @return -1 si no encontro espacios libres, >=0 correspondiente al indice libre
 int sPassenger_findFreeSpace(sPassenger * list, int len)
@@ -155,9 +155,11 @@ int sPassenger_removePassenger(sPassenger* list, int len, int id)
 	retorno = -1;
 	if(list != NULL && len>0)
 	{
+		//OBTENGO EL ID DONDE SE ENCUENTRA EL PASAJERO PASADO POR ID
 		retornoBaja = sPassenger_findPassengerById(list, len, id);
 		if(retornoBaja >=0)
 		{
+			//CAMBIO EL ESTADO A LOW
 			list[retornoBaja].isEmpty = LOW;
 			retorno = 0;
 		}
@@ -175,8 +177,12 @@ int sPassenger_removePassenger(sPassenger* list, int len, int id)
 /// @param passenger
 void sPassenger_printOne(sPassenger passenger)
 {
+	//AUXILIAR PARA MOSTRAR CADENA EN TIPO DE PASAJERO
 	char auxiliarTypePassenger[TAM_TYPEPASSENGER];
+	//AUXILIAR PARA MOSTRAR CADENA EN TESTADO DE VUELO
 	char auxiliarStatus[TAM_STATUSFLYGHT];
+
+
 	switch(passenger.typePassenger)
 	{
 	case 1:
@@ -206,11 +212,12 @@ void sPassenger_printOne(sPassenger passenger)
 
 	}
 
+	//IMPRESIÓN DE 1 PASAJERO
 	printf("\n%-50s|%-50s|%-10.2f|%-6d|%-30s|%-20s|%-20s",passenger.name,passenger.lastName,passenger.price,passenger.id,auxiliarTypePassenger,passenger.flycode,auxiliarStatus);
 }
 
-/// @fn int sPassenger_printAll(sPassenger*, int)
-/// @brief Imprimir todas las entidades de un array que se hayan ingresado
+/// @fn int sPassenger_printPassengers(sPassenger*, int)
+/// @brief Imprimir todas las entidades de un array que se hayan ingresado y que esten activas
 ///
 /// @pre
 /// @post
@@ -229,7 +236,7 @@ int sPassenger_printPassengers(sPassenger* list,int len)
 	{
 		for(i = 0;i<len;i++)
 		{
-			if(list[i].isEmpty != TRUE)
+			if(list[i].isEmpty == FALSE)
 			{
 				sPassenger_printOne(list[i]);
 			}
@@ -241,7 +248,7 @@ int sPassenger_printPassengers(sPassenger* list,int len)
 	return retorno;
 }
 
-/// @fn int sPassenger_printAllIdByStatus(sPassenger*, int, int)
+/// @fn int sPassenger_printAllIdByInit(sPassenger*, int, int)
 /// @brief Imprimir todas los id de entidades segun su estado
 ///
 /// @pre
@@ -250,7 +257,7 @@ int sPassenger_printPassengers(sPassenger* list,int len)
 /// @param len tamaño del array
 /// @param status estado
 /// @return -1 si no encuentra entidades según estado, -2 si array es NULL o tamaño array <=0, 0 si salio bien
-int sPassenger_printAllIdByInit(sPassenger* list,int len,int status)
+int sPassenger_printAllIdByInit(sPassenger* list,int len,int init)
 {
 	int retorno;
 	int i;
@@ -282,15 +289,79 @@ int sPassenger_printAllIdByInit(sPassenger* list,int len,int status)
 	return retorno;
 }
 
+/// @fn int sPassenger_printPassengerByStatus(sPassenger*, int, int)
+/// @brief Imprimir todas los id de entidades segun su estado
+///
+/// @pre
+/// @post
+/// @param list array
+/// @param len tamaño del array
+/// @param status estado
+/// @return -1 si no encuentra entidades ACTIVAS, -2 si array es NULL o tamaño array <=0, 0 si salio bien
+int sPassenger_printPassengerByStatus(sPassenger* list,int len,int status)
+{
+	int retorno;
+	int i;
+	int flag;
+	char auxiliarStatus[TAM_STATUSFLYGHT];
+
+
+	retorno = 0;
+	flag = 0;
+
+	if(list != NULL && len>0)
+	{//RECORRIO EL ARRAY DE PASAJERO
+		for(i = 0;i<len;i++)
+		{
+			//VERIFICO QUE ESTE ACTIVO
+			if(list[i].isEmpty == FALSE)
+			{
+				//SI EL ESTADO DE VUELO ES IGUAL AL QUE CONTIENE EL PASAJERO
+				if(list[i].statusFlight == status)
+				{
+					switch(list[i].statusFlight)
+					{
+						case ACTIVO:
+							strncpy(auxiliarStatus,"ACTIVO",sizeof(auxiliarStatus));
+							break;
+						case REPROGRAMADO:
+							strncpy(auxiliarStatus,"REPROGRAMADO",sizeof(auxiliarStatus));
+							break;
+						case CANCELADO:
+							strncpy(auxiliarStatus,"CANCELADO",sizeof(auxiliarStatus));
+							break;
+
+					}
+
+					//IMPRIMO NOMBRE DEL CLIENTE, CODIGO DE VUELO Y ESTADO
+					printf("\n%-50s|%-9s|%-13s\n",list[i].name,list[i].flycode,auxiliarStatus);
+					flag = 1;
+				}
+
+			}
+		}
+		if(flag == 0)
+		{
+			retorno = -1;
+		}
+	}
+	else
+	{
+		retorno = -2;
+	}
+
+	return retorno;
+}
+
 /// @fn int sPassenger_sortPassengersByTypePassenger(sPassenger*, int, int)
-/// @brief Ordenar array de entidad segun TYPEPASSENGER
+/// @brief Ordenar array de entidad segun TIPO PASAJERO
 ///
 /// @pre
 /// @post
 /// @param list Array
 /// @param len Tamaño del array
 /// @param order 1 ascendente, -1 si es decreciente
-/// @return -1 si array = NULL o tamaño de array<=0 o Order != 1 o !=-1
+/// @return -1 si array = NULL o tamaño de array<=0 o Order != 1 o !=-1, 0 si salio bien
 int sPassenger_sortPassengersByTypePassenger(sPassenger* list, int len, int order) //ORDENA DE FORMA ASCENDENTE O DESCENDENTE SEGUN CAMPO LASTNAME
 {
 	int retorno;
@@ -304,23 +375,26 @@ int sPassenger_sortPassengersByTypePassenger(sPassenger* list, int len, int orde
 
 	if(list != NULL && len>0 && (order == 1 || order == -1))
 	{
-		//ORDENAMIENTO ALFABETICO ASCENDENTE
+		//ORDENAMIENTO ASCENDENTE
 		if(order == 1)
 		{
 			while(flagNoEstaOrdenado == 1)
 			{
 
-				//RECORRO LAS ENTIDADES Y COMPARO POSICION POSICION POSTERIOR CON
+				//RECORRO LAS ENTIDADES Y COMPARO POSICION POSTERIOR CON
 				//POSICION ANTERIOR
 				flagNoEstaOrdenado = 0;
 				for(i=1;i<len;i++)
 				{
+					//SI SUECEDE QUE ES MAYOR EL ANTERIOR
 					if(list[i].typePassenger < list[i-1].typePassenger)
 					{
+						//CAMBIO LOS VALORES EN LAS  POSICIONES
 						auxiliar = list[i-1];
 						list[i-1] = list[i];
 						list[i] = auxiliar;
 						flagNoEstaOrdenado = 1;
+						//ROMPO
 						break;
 					}
 				}
@@ -329,6 +403,7 @@ int sPassenger_sortPassengersByTypePassenger(sPassenger* list, int len, int orde
 			}
 
 		}
+		//ORDENAMIENTO DESCENDENTE
 		else
 		{
 
@@ -339,12 +414,14 @@ int sPassenger_sortPassengersByTypePassenger(sPassenger* list, int len, int orde
 				flagNoEstaOrdenado = 0;
 				for(i=1;i<len;i++)
 				{
+					//SI SUCEDE QUE ES MAYOR EL POSTERIOR
 					if(list[i].typePassenger > list[i-1].typePassenger)
 					{
 						auxiliar = list[i];
 						list[i] = list[i-1];
 						list[i-1] = auxiliar;
 						flagNoEstaOrdenado = 1;
+						//ROMPO
 						break;
 					}
 				}
@@ -483,83 +560,8 @@ int sPassenger_sortPassengers(sPassenger* list, int len, int order)
 	return retorno;
 }
 
-/// @fn int sPassenger_sortPassengersByStatus(sPassenger*, int, int)
-/// @brief Ordenar array de entidad por ISEMPTY
-///
-/// @pre
-/// @post
-/// @param list array
-/// @param len Tamaño de array
-/// @param order 1 si el orden es ascendente, -1 si es decreciente
-/// @return -1 si array = NULL o tamaño de array<=0 o Order != 1 o !=-1
-int sPassenger_sortPassengersByStatus(sPassenger* list, int len, int order)
-{
-	int retorno;
-	int i;
-	int flagNoEstaOrdenado;
-
-	sPassenger auxiliar;
-	flagNoEstaOrdenado = 1;
-
-	retorno = -1;
-
-	if(list != NULL && len>0 && (order == 1 || order == -1))
-	{
-		//ORDENAMIENTO ALFABETICO ASCENDENTE
-		if(order == 1)
-		{
-			while(flagNoEstaOrdenado == 1)
-			{
-
-				//RECORRO LAS ENTIDADES Y COMPARO POSICION POSICION POSTERIOR CON
-				//POSICION ANTERIOR
-				flagNoEstaOrdenado = 0;
-				for(i=1;i<len;i++)
-				{
-					if(list[i].isEmpty < list[i-1].isEmpty)
-					{
-						auxiliar = list[i-1];
-						list[i-1] = list[i];
-						list[i] = auxiliar;
-						flagNoEstaOrdenado = 1;
-						break;
-					}
-				}
-
-
-			}
-
-		}
-		else
-		{
-
-			while(flagNoEstaOrdenado == 1)
-			{
-				//RECORRO LAS ENTIDADES Y COMPARO POSICION POSICION POSTERIOR CON
-				//POSICION ANTERIOR
-				flagNoEstaOrdenado = 0;
-				for(i=1;i<len;i++)
-				{
-					if(list[i].isEmpty > list[i-1].isEmpty)
-					{
-						auxiliar = list[i];
-						list[i] = list[i-1];
-						list[i-1] = auxiliar;
-						flagNoEstaOrdenado = 1;
-						break;
-					}
-				}
-
-			}
-
-		}
-		retorno = 0;
-	}
-	return retorno;
-}
-
 /// @fn int sPassenger_sortPassengersByCode(sPassenger*, int, int)
-/// @brief Ordenar array de entidad según FLYCODE y ISEMPTY
+/// @brief Ordenar array de entidad según FLYCODE
 ///
 /// @pre
 /// @post
@@ -581,13 +583,9 @@ int sPassenger_sortPassengersByCode(sPassenger* list, int len, int order)
 
 	if(list != NULL && len>0 && (order == 1 || order == -1))
 	{
-		//ORDENO POR ESTADO
-		sPassenger_sortPassengersByStatus(list, len, order);
-
 		//ORDENAMIENTO ALFABETICO ASCENDENTE
 		if(order == 1)
 		{
-			//ORDENO POR TIPO DE PASAJERO
 			while(flagNoEstaOrdenado == 1)
 			{
 
@@ -628,7 +626,6 @@ int sPassenger_sortPassengersByCode(sPassenger* list, int len, int order)
 
 
 					}
-
 				}
 
 			}

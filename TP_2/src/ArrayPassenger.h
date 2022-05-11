@@ -20,7 +20,7 @@
 #define LOW 2
 #define TAM_TYPEPASSENGER 30
 #define TAM_STATUSFLYGHT 13
-#define ACTIVO 50
+#define ACTIVO 1
 #define REPROGRAMADO 2
 #define CANCELADO 3
 
@@ -45,11 +45,11 @@ int sPassenger_addPassenger(sPassenger* list, int len, int id, char name[],char 
 int sPassenger_removePassenger(sPassenger* list, int len, int id);
 int sPassenger_sortPassengers(sPassenger* list, int len, int order);
 int sPassenger_sortPassengersByTypePassenger(sPassenger* list, int len, int order);
-int sPassenger_printAllIdByInit(sPassenger* list,int len,int status);
+int sPassenger_printAllIdByInit(sPassenger* list,int len,int init);
 int sPassenger_sortPassengersByCode(sPassenger* list, int len, int order);
 void sPassenger_printOne(sPassenger passenger);
 int sPassenger_printPassengers(sPassenger* list,int len);
-int sPassenger_printAllIdByStatus(sPassenger* list,int len,int status);
+int sPassenger_printPassengerByStatus(sPassenger* list,int len,int status);
 
 
 

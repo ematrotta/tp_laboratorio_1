@@ -42,6 +42,7 @@ int main(void){
 	float contadorVuelosActivos;
 	float promedioVuelosActivos;
 	int contadorPasajesQSuperanPrecioPromedio;
+	//INDICE DE ITERACIONES INTERNAS
 	int i;
 
 	retorno = 0;
@@ -86,12 +87,9 @@ int main(void){
 					//INGRESO LOS DATOS A UNA ENTIDAD DEL ARRAY SI ES QUE HAY ESPACIO LIBRE Y CAMBIO SU ESTADO
 					if(sPassenger_InputsDataPassenger(&auxiliar,vuelos,VUELOS, "ERROR. No se pudo ingresar el pasajero") == 0 && sPassenger_addPassenger(listaPasajeros, PASAJEROS, auxiliar.id, auxiliar.name, auxiliar.lastName, auxiliar.price, auxiliar.typePassenger, auxiliar.flycode) == 0)
 					{
-						sPassenger_addPassengerFlyghtStatus(listaPasajeros,PASAJEROS,vuelos,VUELOS);
 						puts("\nCARGA EXITOSA");
 						contadorAltas++;
 					}
-
-
 				}
 				else
 				{
@@ -111,10 +109,8 @@ int main(void){
 					}
 					//PIDO UN ID
 					puts("\nSeleccione el ID a modificar: ");
-					//SOLICITO UN ID
 					GetIntegrer(&idSeleccionado);
-					//BUSCO EN EL ARRAY, UNA ENTIDAD QUE CONTENGA EL ID SOLICITADO Y VALIDO QUE EXISTA
-					//TOMO SU INDICE PARA LUEGO MODIFICAE UN CAMPO DE LA ENTIDAD ENCONTRADA
+					//TOMO EL RETORNO DE LA FUNCION MODIFICAR Y LISTO MENSAJES
 					retornoModificacion = sPassenger_Modification(listaPasajeros, PASAJEROS,idSeleccionado,vuelos,VUELOS);
 					switch(retornoModificacion)
 					{
@@ -144,8 +140,9 @@ int main(void){
 				//BAJA
 				if(contadorAltas > 0)
 				{
-					//LISTO LOS ID OCUPADOS
+					//LISTO LOS ID ACTIVOS
 					puts("\nLos ID disponibles son: ");
+					// SI NO HAY IMPRIMO ERROR Y SALGO
 					if(sPassenger_printAllIdByInit(listaPasajeros, PASAJEROS, FALSE)!=0)
 					{
 						puts("\nNo hay IDs para dar de baja");
@@ -153,10 +150,8 @@ int main(void){
 					}
 					//PIDO UN ID
 					puts("\nSeleccione el ID a dar de baja: ");
-					//SOLICITO UN ID
 					GetIntegrer(&idSeleccionado);
-					//BUSCO EN EL ARRAY, UNA ENTIDAD QUE CONTENGA EL ID SOLICITADO Y VALIDO QUE EXISTA
-					//TOMO SU INDICE PARA LUEGO MODIFICAE UN CAMPO DE LA ENTIDAD ENCONTRADA
+					//FUNCION REMOVE QUE CAMBIA EL ESTADO DE TRUE A LOW
 					if(sPassenger_removePassenger(listaPasajeros,PASAJEROS,idSeleccionado)!=0)
 					{
 						puts("\nERROR. No se encontró el ID ");
@@ -188,10 +183,10 @@ int main(void){
 						switch(opcionMenus)
 						{
 						case 1:
-							//ORDENO LOS NOMBRES ALFABETICAMENTE Y POR TIPO DE TODOS LOS PASAJEROS
+							//ORDENO LOS APELLIDOS ALFABETICAMENTE Y POR TIPO DE TODOS LOS PASAJEROS
 							sPassenger_sortPassengers(listaPasajeros, PASAJEROS, 1);
-							//IMPRIMO SOLO LOS PASAJEROS QUE NO ESTEN LIBRES
 							printf("%-50s|%-50s|%-10s|%-6s|%-30s|%-20s|%-20s","NOMBRE","APELLIDO","PRECIO","ID","TIPO PASAJERO","CODIGO DE VUELO","ESTADO DE VUELO");
+							//IMPRIMO SOLO LOS PASAJEROS QUE NO ESTEN LIBRES
 							sPassenger_printPassengers(listaPasajeros, PASAJEROS);
 							break;
 						case 2:
@@ -209,9 +204,9 @@ int main(void){
 							{
 								//SACO EL PROMEDIO
 								DividirFloat(totalPrecioPasajesActivos, contadorVuelosActivos, "\nERROR no se puede dividir por 0", &promedioVuelosActivos);
+								//ACUMULO LA CANTIDAD DE PASAJES QUE SUPERAN EN PRECIO PROMEDIO
 								for(i = 0;i<PASAJEROS;i++)
 								{
-									//ACUMULO LA CANTIDAD DE PASAJES QUE SUPERAN EN PRECIO PROMEDIO
 									if(listaPasajeros[i].isEmpty == FALSE && listaPasajeros[i].price>promedioVuelosActivos)
 									{
 										contadorPasajesQSuperanPrecioPromedio++;
@@ -237,13 +232,12 @@ int main(void){
 							break;
 						case 3:
 							//ORDENO LOS PASAJEROS POR SU CODIGO DE VUELO Y ESTADO DE VUELO
-							sPassenger_sortPassengersByCode(listaPasajeros, PASAJEROS, 1);
+							sPassenger_sortPassengersByCode(listaPasajeros, PASAJEROS, ACTIVO);
 							//IMPRIMO SOLO LOS ACTIVOS
-							/*
-							if(sPassenger_printAllIdByStatus(listaPasajeros, PASAJEROS, ACTIVO)!=0)
+							if(sPassenger_printPassengerByStatus(listaPasajeros, PASAJEROS, ACTIVO)!=0)
 							{
 								puts("\nERROR. No se encontraron vuelos activos");
-							}*/
+							}
 							break;
 						}
 					}
