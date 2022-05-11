@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "Flyght.h"
 #include "Inputs.h"
 #include "Outputs.h"
 #define NAME 51
@@ -18,9 +19,10 @@
 #define FALSE 1
 #define LOW 2
 #define TAM_TYPEPASSENGER 30
-#define STATUSFLIGHT_ACTIVE 1
-#define STATUSFLIGHT_REPROGRAM 2
-#define STATUSFLIGHT_CANCEL 3
+#define TAM_STATUSFLYGHT 13
+#define ACTIVO 50
+#define REPROGRAMADO 2
+#define CANCELADO 3
 
 
 typedef struct
@@ -38,13 +40,12 @@ typedef struct
 int sPassenger_initPassenger(sPassenger * list, int len);
 int sPassenger_findFreeSpace(sPassenger * list, int len);
 int sPassenger_findPassengerById(sPassenger * list,int len,int id);
-sPassenger sPassenger_InputsDataPassenger(char mensajeError[]);
+int sPassenger_InputsDataPassenger(sPassenger * passenger, sFlyght listFlyghts[],int lenflyghts, char mensajeError[]);
 int sPassenger_addPassenger(sPassenger* list, int len, int id, char name[],char lastName[],float price,int typePassenger, char flycode[]);
-int sPassenger_Modification(sPassenger * list,int len,int id);
 int sPassenger_removePassenger(sPassenger* list, int len, int id);
 int sPassenger_sortPassengers(sPassenger* list, int len, int order);
 int sPassenger_sortPassengersByTypePassenger(sPassenger* list, int len, int order);
-int sPassenger_sortPassengersByStatus(sPassenger* list, int len, int order);
+int sPassenger_printAllIdByInit(sPassenger* list,int len,int status);
 int sPassenger_sortPassengersByCode(sPassenger* list, int len, int order);
 void sPassenger_printOne(sPassenger passenger);
 int sPassenger_printPassengers(sPassenger* list,int len);

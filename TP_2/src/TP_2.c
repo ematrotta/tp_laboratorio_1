@@ -11,9 +11,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "ArrayPassenger.h"
+#include "ArrayPassenger_Flight.h"
 
 #define PASAJEROS 4
+#define VUELOS 3
+
 
 
 int main(void){
@@ -28,13 +30,15 @@ int main(void){
 	int retorno;
 	//ID INGRESADO PARA REALIZAR ACCIONES
 	int idSeleccionado;
-	//RETORNO PARA VALIDAD LA CORRECTA MIDIFICACION DE UNA ENTIDAD
+	//RETORNO PARA VALIDAR LA CORRECTA MIDIFICACION DE UNA ENTIDAD
 	int retornoModificacion;
 	//CONTADOR PARA VERIFICAR QUE HAYA ESPACIO PARA CARGAR PASAJEROS
 	int contadorAltas;
 	//RETONTO PARA VALIDAD QUE SE INGRESO BIEN LA OPCION DEL SUBMENU DE "INFORMES"
 	int retornoMenuInforme;
+	//ACUMULADOR DE PREIOS DE PASAJES
 	float totalPrecioPasajesActivos;
+	//ACUMULADOR DE CANTIDAD DE VUELOS ACTIVOS
 	float contadorVuelosActivos;
 	float promedioVuelosActivos;
 	int contadorPasajesQSuperanPrecioPromedio;
@@ -47,10 +51,16 @@ int main(void){
 	promedioVuelosActivos = 0;
 	contadorPasajesQSuperanPrecioPromedio = 0;
 
+	//AUXILIAR PARA CARGAR DATOS NO GENERICOS DE UN PASAJERO
 	sPassenger auxiliar;
+	//ARRAY DE PASAJEROS
 	sPassenger listaPasajeros[PASAJEROS];
+	//ARRAY DE VUELOS HARCODEADOS
+	sFlyght vuelos[VUELOS]={{"ABC123456",ACTIVO},{"ZZ123456",REPROGRAMADO},{"ZZ1277889",CANCELADO}};
 
-	//INICIALIZO TODOS LAS ENTIDADES DEL ARRAY
+
+
+	//INICIALIZO TODOS LAS ENTIDADES DEL ARRAY DE PASAJEROS
 	sPassenger_initPassenger(listaPasajeros, PASAJEROS);
 
 	do
@@ -73,13 +83,14 @@ int main(void){
 				if(contadorAltas<PASAJEROS)
 				{
 					//CARGO DE DATOS A UN AUXILIAR DE LA ENTIDAD
-					auxiliar = sPassenger_InputsDataPassenger("ERROR. Reingrese los datos");
 					//INGRESO LOS DATOS A UNA ENTIDAD DEL ARRAY SI ES QUE HAY ESPACIO LIBRE Y CAMBIO SU ESTADO
-					if(sPassenger_addPassenger(listaPasajeros, PASAJEROS, auxiliar.id, auxiliar.name, auxiliar.lastName, auxiliar.price, auxiliar.typePassenger, auxiliar.flycode) == 0)
+					if(sPassenger_InputsDataPassenger(&auxiliar,vuelos,VUELOS, "ERROR. No se pudo ingresar el pasajero") == 0 && sPassenger_addPassenger(listaPasajeros, PASAJEROS, auxiliar.id, auxiliar.name, auxiliar.lastName, auxiliar.price, auxiliar.typePassenger, auxiliar.flycode) == 0)
 					{
+						sPassenger_addPassengerFlyghtStatus(listaPasajeros,PASAJEROS,vuelos,VUELOS);
 						puts("\nCARGA EXITOSA");
 						contadorAltas++;
 					}
+
 
 				}
 				else
@@ -93,7 +104,7 @@ int main(void){
 				{
 					//LISTO LOS ID OCUPADOS
 					puts("\nLos ID disponibles son: ");
-					if(sPassenger_printAllIdByStatus(listaPasajeros, PASAJEROS, FALSE)!=0)
+					if(sPassenger_printAllIdByInit(listaPasajeros, PASAJEROS, FALSE)!=0)
 					{
 						puts("\nNo hay IDs para modificar");
 						break;
@@ -104,7 +115,7 @@ int main(void){
 					GetIntegrer(&idSeleccionado);
 					//BUSCO EN EL ARRAY, UNA ENTIDAD QUE CONTENGA EL ID SOLICITADO Y VALIDO QUE EXISTA
 					//TOMO SU INDICE PARA LUEGO MODIFICAE UN CAMPO DE LA ENTIDAD ENCONTRADA
-					retornoModificacion = sPassenger_Modification(listaPasajeros, PASAJEROS,idSeleccionado);
+					retornoModificacion = sPassenger_Modification(listaPasajeros, PASAJEROS,idSeleccionado,vuelos,VUELOS);
 					switch(retornoModificacion)
 					{
 					case 0:
@@ -135,7 +146,7 @@ int main(void){
 				{
 					//LISTO LOS ID OCUPADOS
 					puts("\nLos ID disponibles son: ");
-					if(sPassenger_printAllIdByStatus(listaPasajeros, PASAJEROS, FALSE)!=0)
+					if(sPassenger_printAllIdByInit(listaPasajeros, PASAJEROS, FALSE)!=0)
 					{
 						puts("\nNo hay IDs para dar de baja");
 						break;
@@ -166,6 +177,8 @@ int main(void){
 				//INFORMAR SOLO SI SE REALIZÓ AL MENOS 1 ALTA
 				if(contadorAltas > 0)
 				{
+					//LE COLOCO A TODOS LOS PASAJEROS SU ESTADO DE VUELO
+					sPassenger_addPassengerFlyghtStatus(listaPasajeros,PASAJEROS,vuelos,VUELOS);
 					//PIDO LA OPCION DE INFORME
 					retornoMenuInforme = Utn_GetNumeroInt(&opcionMenus, "\n\t1)Listado de pasajeros ordenados alfabéticamente por apellido y tipo de pasajero\n\t"
 							"2)Total y promedio de los precios de los pasajes, y cuántos pasajeros superan el precio promedio.\n\t"
@@ -226,10 +239,11 @@ int main(void){
 							//ORDENO LOS PASAJEROS POR SU CODIGO DE VUELO Y ESTADO DE VUELO
 							sPassenger_sortPassengersByCode(listaPasajeros, PASAJEROS, 1);
 							//IMPRIMO SOLO LOS ACTIVOS
-							if(sPassenger_printAllIdByStatus(listaPasajeros, PASAJEROS, FALSE)!=0)
+							/*
+							if(sPassenger_printAllIdByStatus(listaPasajeros, PASAJEROS, ACTIVO)!=0)
 							{
 								puts("\nERROR. No se encontraron vuelos activos");
-							}
+							}*/
 							break;
 						}
 					}

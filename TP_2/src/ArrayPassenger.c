@@ -7,20 +7,6 @@
 
 #include "ArrayPassenger.h"
 
-/** \brief To indicate that all position in the array are empty,
-* this function put the flag (isEmpty) in TRUE in all
-* position of the array
-* \param list Passenger* Pointer to array of passenger
-* \param len int Array length
-* \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
-*
-*/
-static int initId = 1000;
-static int sPassenger_IdGenerator(void)
-{
-	return initId++;
-}
-
 /// @fn int sPassenger_initPassenger(sPassenger*, int)
 /// @brief Inicializar todos los campos isEmpty
 ///
@@ -79,6 +65,46 @@ int sPassenger_findPassengerById(sPassenger * list,int len,int id)
 	return retorno;
 }
 
+/// @fn int sPassenger_addPassenger(sPassenger*, int, int, char[], char[], float, int, char[])
+/// @brief Cargar datos de Pasajero libre en un array de pasajos
+///
+/// @pre
+/// @post
+/// @param list array de pasajeros
+/// @param len tamaño del array
+/// @param id id del pasajero que se va a cargar
+/// @param name nombre del pasajero que se va a cargar
+/// @param lastName apellido del pasajero que se va a cargar
+/// @param price precio del pasajero que se va a cargar
+/// @param typePassenger tipo de pasajero
+/// @param flycode Codigo de vuelo del pasajero que se va a cargar
+/// @return -1 si el array es nulo o tamaño del array es menor o igual que 0 o si no se encontraron espacios libres, y 0 si esta OK
+int sPassenger_addPassenger(sPassenger* list, int len, int id, char name[],char
+lastName[],float price,int typePassenger, char flycode[])
+{
+	int retorno;
+	int indiceLibre;
+
+
+	retorno = -1;
+	//BUSCA DENTRO DE UN ARRAY DE ENTIDADES, UN ESPACIO LIBRE
+	indiceLibre = sPassenger_findFreeSpace(list, len);
+	if(list != NULL && len>0 && indiceLibre>=0)
+	{
+		//CUANDO LO ENCUENTRA, CARGA A UNA ENTIDAD DENTRO DEL ARRAY TODOS SUS CAMPOS
+		list[indiceLibre].id = id;
+		strncpy(list[indiceLibre].name,name,NAME);
+		strncpy(list[indiceLibre].lastName,lastName,NAME);
+		list[indiceLibre].price = price;
+		list[indiceLibre].typePassenger = typePassenger;
+		strncpy(list[indiceLibre].flycode,flycode,FLYCODE);
+		//EL ESTADO DE VUELO, SE LO COLOCO AL MOMENTO DE REALIZAR EL INFORME
+		list[indiceLibre].isEmpty = FALSE;
+		retorno = 0;
+	}
+	return retorno;
+}
+
 
 /// @fn int sPassenger_findFreeSpace(sPassenger*, int)
 /// @brief Encontrar un espacio Libre
@@ -110,170 +136,7 @@ int sPassenger_findFreeSpace(sPassenger * list, int len)
 	return retorno;
 }
 
-/// @fn sPassenger sPassenger_InputsDataPassenger(char[])
-/// @brief Ingresar datos en un Pasajeros excepto modificar el estado
-///
-/// @pre
-/// @post
-/// @param mensajeError Mensje si no se pudieron cargar bien los datos
-/// @return Un pasajero, exceptuando su estado
-sPassenger sPassenger_InputsDataPassenger(char mensajeError[])
-{
-	sPassenger auxiliar;
-	int flag;
 
-	if(mensajeError != NULL)
-	{
-		do
-		{
-			//CARGO UNA ENTIDAD AUXILIAR DE TODOS SUS DATOS Y VALIDO QUE SEAN CORRECTOS
-			flag = 1;
-			if(
-			Utn_GetName(auxiliar.name, NAME, "\nIngrese el nombre", "ERROR. Maxima cantidad de caracteres: 50 o No es un Nombre", 3) != 0 ||
-			Utn_GetName(auxiliar.lastName, NAME, "Ingrese el Apellido", "ERROR. Maxima cantidad de caracteres: 50 o No es un Apellido", 3) != 0 ||
-			Utn_GetString(auxiliar.flycode, "Ingrese el codigo de vuelo", "ERROR. Maxima cantidad de caracteres: 9", FLYCODE, 3)!= 0 ||
-			Utn_GetNumeroFloat(&auxiliar.price, "Ingrese el precio de vuelo", "ERROR. Debe ser entre 0 y 10000", 10000, 0, 3)!= 0 ||
-			Utn_GetNumeroInt(&auxiliar.typePassenger, "Ingrese el tipo de Pasajero:\n\t1)Primera clase."
-					"\n\t2)Clase ejecutiva o business.\n\t3)Clase premium economy\n\t4)Clase turista o económica.\nOPCIÓN", "ERROR. Debe ser entre 1 y 4", 4, 1, 3)!= 0)
-			{
-				printf("\n%s\n",mensajeError);
-				//SI ALGUNO DE LOS DATOS SON INCONRRECTOS, VUELVE A SOLICITARLOS TODOS
-				flag = 0;
-			}
-		}while(flag == 0);
-		auxiliar.id = sPassenger_IdGenerator();
-	}
-
-	return auxiliar;
-}
-
-/// @fn int sPassenger_addPassenger(sPassenger*, int, int, char[], char[], float, int, char[])
-/// @brief Cargar datos de Pasajero libre en un array de pasajos
-///
-/// @pre
-/// @post
-/// @param list array de pasajeros
-/// @param len tamaño del array
-/// @param id id del pasajero que se va a cargar
-/// @param name nombre del pasajero que se va a cargar
-/// @param lastName apellido del pasajero que se va a cargar
-/// @param price precio del pasajero que se va a cargar
-/// @param typePassenger tipo de pasajero
-/// @param flycode Codigo de vuelo del pasajero que se va a cargar
-/// @return -1 si el array es nulo o tamaño del array es menor o igual que 0 o si no se encontraron espacios libres, y 0 si esta OK
-int sPassenger_addPassenger(sPassenger* list, int len, int id, char name[],char
-lastName[],float price,int typePassenger, char flycode[])
-{
-	int retorno;
-	int indiceLibre;
-
-	retorno = -1;
-	//BUSCA DENTRO DE UN ARRAY DE ENTIDADES, UN ESPACIO LIBRE
-	indiceLibre = sPassenger_findFreeSpace(list, len);
-	if(list != NULL && len>0 && indiceLibre>=0)
-	{
-		//CUANDO LO ENCUENTRA, CARGA A UNA ENTIDAD DENTRO DEL ARRAY TODOS SUS CAMPOS
-		list[indiceLibre].id = id;
-		strncpy(list[indiceLibre].name,name,NAME);
-		strncpy(list[indiceLibre].lastName,lastName,NAME);
-		list[indiceLibre].price = price;
-		list[indiceLibre].typePassenger = typePassenger;
-		strncpy(list[indiceLibre].flycode,flycode,FLYCODE);
-		list[indiceLibre].isEmpty = FALSE;
-		retorno = 0;
-	}
-	return retorno;
-}
-
-/// @fn int sPassenger_Modification(sPassenger*, int)
-/// @brief Modificar una entidad de un array
-///
-/// @pre
-/// @post
-/// @param list Array
-/// @param len Tamaño del array
-/// @param id id a buscar
-/// @return -1 si el array = NULL o el tamaño es <=0
-/// -2 si no se pudo encontrar ningun Id para modificar
-/// -3 si colocó mal la opcion para seleccionar el menu
-/// -4 si no realizó bien la modificacion
-int sPassenger_Modification(sPassenger * list,int len,int id)
-{
-	int retorno;
-	int indiceId;
-	int opcionMenu;
-
-	retorno = -1;
-	if(list != NULL && len>0)
-	{
-		indiceId = sPassenger_findPassengerById(list,len,id);
-		if(indiceId<0)
-		{
-			retorno = -2;
-		}
-		else
-		{
-			//DESPLIEGO SUBMENU
-			puts("\nQué dato desea modificar?\n\t1)Nombre\n\t2)Apellido"
-					"\n\t3)Codigo de vuelo\n\t4)Tipo de pasajero\n\t5)Precio");
-			//PIDO QUE INGRESE LA OPCION DEL SUBMENU
-			if(Utn_GetNumeroInt(&opcionMenu, "Opcion", "Debe ser entre 1 y 5", 5, 1, 3) != 0)
-			{
-				retorno = -3;
-			}
-			else
-			{
-				switch(opcionMenu)
-				{
-					case 1:
-						//MODIFICAE NOMBRE
-						if(Utn_GetName(list[indiceId].name, NAME, "Ingrese el nuevo nombre", "El Max de caracteres 50 o no es un Nombre", 3) == 0)
-						{
-							retorno = 0;
-						}
-						break;
-					case 2:
-						//MODIFICAR APELLIDO
-						if(Utn_GetName(list[indiceId].lastName, NAME, "Ingrese el nuevo Apellido", "El Max de caracteres 50 o no es un Apellido", 3) == 0)
-						{
-							retorno = 0;
-						}
-						break;
-					case 3:
-						//MODIFICAR CODIGO DE VUELO
-						if(Utn_GetString(list[indiceId].flycode, "Ingrese el nuevo codigo de vuelo", "El codigo de vuelo supera el buffer",FLYCODE, 3) == 0)
-						{
-							retorno = 0;
-						}
-						break;
-					case 4:
-						//MODIFICAR TIPO DE PASAJERO
-						if(Utn_GetNumeroInt(&list[indiceId].typePassenger, "Ingrese el nuevo tipo de pasajero", "ERROR. Debe ser entre 1 y 3", 3, 1, 3) == 0)
-						{
-							retorno = 0;
-						}
-						break;
-					case 5:
-						//MODIFICAR EL PRECIO
-						if(Utn_GetNumeroFloat(&list[indiceId].price, "Ingrese el nuevo precio", "El precio debe ser entre", 100000, 0, 3) == 0)
-						{
-							retorno = 0;
-						}
-						break;
-				}
-				//VALIDO QUE EL RESULTADO DE LA MODIFICACION DEL CAMPO SEA CORRECTA
-				if(retorno != 0)
-				{
-					//SI NO ES CORRECTA LA MODIFICACION
-					retorno = -4;
-				}
-
-			}
-		}
-	}
-
-	return retorno;
-}
 
 /// @fn int sPassenger_removePassenger(sPassenger*, int, int)
 /// @brief Dar de baja una entidad dentro de un array
@@ -313,6 +176,7 @@ int sPassenger_removePassenger(sPassenger* list, int len, int id)
 void sPassenger_printOne(sPassenger passenger)
 {
 	char auxiliarTypePassenger[TAM_TYPEPASSENGER];
+	char auxiliarStatus[TAM_STATUSFLYGHT];
 	switch(passenger.typePassenger)
 	{
 	case 1:
@@ -328,8 +192,21 @@ void sPassenger_printOne(sPassenger passenger)
 		strncpy(auxiliarTypePassenger,"Clase turista o economica",sizeof(auxiliarTypePassenger));
 		break;
 	}
+	switch(passenger.statusFlight)
+	{
+		case ACTIVO:
+			strncpy(auxiliarStatus,"ACTIVO",sizeof(auxiliarStatus));
+			break;
+		case REPROGRAMADO:
+			strncpy(auxiliarStatus,"REPROGRAMADO",sizeof(auxiliarStatus));
+			break;
+		case CANCELADO:
+			strncpy(auxiliarStatus,"CANCELADO",sizeof(auxiliarStatus));
+			break;
 
-	printf("\n%-50s|%-50s|%-10.2f|%-6d|%-30s|%-20s|%-20d",passenger.name,passenger.lastName,passenger.price,passenger.id,auxiliarTypePassenger,passenger.flycode,passenger.statusFlight);
+	}
+
+	printf("\n%-50s|%-50s|%-10.2f|%-6d|%-30s|%-20s|%-20s",passenger.name,passenger.lastName,passenger.price,passenger.id,auxiliarTypePassenger,passenger.flycode,auxiliarStatus);
 }
 
 /// @fn int sPassenger_printAll(sPassenger*, int)
@@ -373,7 +250,7 @@ int sPassenger_printPassengers(sPassenger* list,int len)
 /// @param len tamaño del array
 /// @param status estado
 /// @return -1 si no encuentra entidades según estado, -2 si array es NULL o tamaño array <=0, 0 si salio bien
-int sPassenger_printAllIdByStatus(sPassenger* list,int len,int status)
+int sPassenger_printAllIdByInit(sPassenger* list,int len,int status)
 {
 	int retorno;
 	int i;
@@ -386,7 +263,7 @@ int sPassenger_printAllIdByStatus(sPassenger* list,int len,int status)
 	{
 		for(i = 0;i<len;i++)
 		{
-			if(list[i].isEmpty == status)
+			if(list[i].isEmpty == FALSE)
 			{
 				printf("\nID: %d\n",list[i].id);
 				flag = 1;
