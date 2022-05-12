@@ -98,7 +98,7 @@ lastName[],float price,int typePassenger, char flycode[])
 		list[indiceLibre].price = price;
 		list[indiceLibre].typePassenger = typePassenger;
 		strncpy(list[indiceLibre].flycode,flycode,FLYCODE);
-		//EL ESTADO DE VUELO, SE LO COLOCO AL MOMENTO DE REALIZAR EL INFORME
+		//EL ESTADO DE VUELO, SE LO COLOCO LUEGO AL MOMENTO DE REALIZAR EL INFORME
 		list[indiceLibre].isEmpty = FALSE;
 		retorno = 0;
 	}
@@ -270,7 +270,7 @@ int sPassenger_printAllIdByInit(sPassenger* list,int len,int init)
 	{
 		for(i = 0;i<len;i++)
 		{
-			if(list[i].isEmpty == FALSE)
+			if(list[i].isEmpty == init)
 			{
 				printf("\nID: %d\n",list[i].id);
 				flag = 1;

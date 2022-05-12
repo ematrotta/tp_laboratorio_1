@@ -13,7 +13,7 @@ static int sPassenger_IdGenerator(void)
 }
 
 /// @fn int int sPassenger_InputsDataPassenger(sPassenger *,sFlyght*,int, char*)
-/// @brief Ordenar array de entidad según FLYCODE
+/// @brief Ingresar datos en un pasajero
 ///
 /// @pre
 /// @post
@@ -162,7 +162,7 @@ int sPassenger_addPassengerFlyghtStatus(sPassenger passenger[],int lenPassenger,
 
 
 /// @fn int sPassenger_Modification(sPassenger *,int,sFlyght*,int)
-/// @brief Agregar a cada pasajero ACTIVO el estado de vuelo en base a su codigo de vuelo
+/// @brief Modifiar algun campo de la estructura
 ///
 /// @pre
 /// @post

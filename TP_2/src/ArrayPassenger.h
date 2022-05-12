@@ -40,7 +40,6 @@ typedef struct
 int sPassenger_initPassenger(sPassenger * list, int len);
 int sPassenger_findFreeSpace(sPassenger * list, int len);
 int sPassenger_findPassengerById(sPassenger * list,int len,int id);
-int sPassenger_InputsDataPassenger(sPassenger * passenger, sFlyght listFlyghts[],int lenflyghts, char mensajeError[]);
 int sPassenger_addPassenger(sPassenger* list, int len, int id, char name[],char lastName[],float price,int typePassenger, char flycode[]);
 int sPassenger_removePassenger(sPassenger* list, int len, int id);
 int sPassenger_sortPassengers(sPassenger* list, int len, int order);
