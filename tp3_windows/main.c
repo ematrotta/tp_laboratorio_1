@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Controller.h"
+#include "Flyght.h"
 
 
 /****************************************************
@@ -18,6 +19,7 @@
     10. Salir
 *****************************************************/
 
+sFlyght vuelos[VUELOS]={{"BA2491A",Aterrizado},{"BR3456J",Demorado},{"FR5678G",EnHorario},{"GU2345F",EnVuelo},{"HY4567D",Demorado},{"IB0800A",Aterrizado},{"MM0987B",EnHorario},{"TU6789B",Aterrizado}};
 
 
 int main()
